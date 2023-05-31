@@ -1,41 +1,30 @@
-import paho.mqtt.client as paho
+""""Demonstrates a simple implementation of an 'event' listener that triggers
+a publication via mqtt"""
 
+import mqtt_device
 
-
-
-
-# client.publish("lot/sensor", "Hello from Python")
-
-
-class Sensor:
-    def __init__(self, config):
-        self.name = config['name']
-        self.location = config['location']
-        self.topic = config['topic']
-        self.broker = config['broker']
-        self.port = config['port']
-        self.client = paho.Client()
-        self.client.connect(self.broker,
-                            self.port)
-
+class Sensor(mqtt_device.MqttDevice):
 
     def on_detection(self, message):
+        """Triggered when a detection occurs"""
         self.client.publish(self.topic, message)
 
     def start_sensing(self):
+        """ A blocking event loop that waits for detection events, in this
+        case Enter presses"""
         while True:
-            reply = input("Is there a car?")
-            if reply == 'y':
-                self.on_detection("Car, I saw a car!!")
-
+            input("Press Enter when 🚗 detected!")
+            self.on_detection("Car-Detected")
 
 
 if __name__ == '__main__':
     config = {'name': 'super sensor',
               'location': 'L306',
-              'topic': "lot/sensor",
+              'topic-root': "lot",
               'broker': 'localhost',
-              'port': 1883}
+              'port': 1883,
+              'topic-qualifier': 'entry'
+              }
 
     sensor = Sensor(config)
     print("Sensor initialized")
