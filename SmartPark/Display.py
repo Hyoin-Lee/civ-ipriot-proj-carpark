@@ -80,7 +80,7 @@ class CarParkDisplay:
     def __init__(self,config):
         
         self.window = WindowedDisplay(
-            'Moondalup', CarParkDisplay.fields)
+            config["location"], CarParkDisplay.fields)
         
         #updater = threading.Thread(target=self.check_updates)
         #updater.daemon = True
