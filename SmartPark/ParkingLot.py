@@ -19,9 +19,15 @@ class ParkingLot():
         print(f'Received {msg.payload.decode()}')
         incoming=msg.payload.decode()
         if(incoming=="in"):
-            self.current_cars=self.current_cars+1
+            self.current_cars=self.current_cars+1 
+            if (self.current_cars > self.total_space):
+                print("Fully occupied")
+                self.current_cars = self.total_space
         else:
             self.current_cars=self.current_cars-1
+            if (self.current_cars < 0):
+                print("Invalid number")
+                self.current_cars = 0
         self.Count_available_cars()
     
     def getTimeAndTemperature(self):
@@ -29,7 +35,7 @@ class ParkingLot():
 
     def Count_available_cars(self):
         currentTime, temperature=self.getTimeAndTemperature()
-        self.client.publish("lot/display",  currentTime+"@"+temperature+"@"+str(192-self.current_cars))
+        self.client.publish("lot/display",  str(192-self.current_cars)+"@"+currentTime+"@"+temperature)
 
 
 
