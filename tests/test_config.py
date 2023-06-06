@@ -2,7 +2,7 @@ import unittest
 
 import tomli  # you can use toml, json,yaml, or ryo for your config file
 
-import smartpark.parse_config as pc
+import Backup.parse_config as pc
 
 
 class TestConfigParsing(unittest.TestCase):
