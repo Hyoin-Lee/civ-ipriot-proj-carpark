@@ -5,13 +5,14 @@ You need to split the classes here into two files, one for the CarParkDisplay an
 Attend to the TODOs in each class to complete the implementation."""
 import tkinter as tk
 import paho.mqtt.client as paho
+import config_parser
 
 
 
 class CarDetector:
     """Provides a couple of simple buttons that can be used to represent a sensor detecting a car. This is a skeleton only."""
 
-    def __init__(self):
+    def __init__(self, config):
         self.root = tk.Tk()
         self.root.title("Car Detector ULTRA")
 
@@ -23,8 +24,7 @@ class CarDetector:
         self.btn_outgoing_car.pack(padx=10, pady=5)
 
         self.client = paho.Client()
-        self.client.connect("LocalHost", 1883)
-
+        self.client.connect(config["broker_host"], config["broker_port"])
 
 
 
@@ -45,4 +45,5 @@ if __name__ == '__main__':
     # TODO: Run each of these classes in a separate terminal. You should see the CarParkDisplay update when you click the buttons in the CarDetector.
     # These classes are not designed to be used in the same module - they are both blocking. If you uncomment one, comment-out the other.
 
-    CarDetector()
+    config = config_parser.parse_config("config.toml") 
+    CarDetector(config)

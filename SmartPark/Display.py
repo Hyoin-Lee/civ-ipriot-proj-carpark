@@ -8,6 +8,7 @@ import tkinter as tk
 from typing import Iterable
 import paho.mqtt.client as paho
 import time
+import config_parser
 
 # ------------------------------------------------------------------------------------#
 # You don't need to understand how to implement this class, just how to use it.       #
@@ -76,7 +77,7 @@ class CarParkDisplay:
     # determines what fields appear in the UI
     fields = ['Available bays', 'Temperature', 'At']
 
-    def __init__(self):
+    def __init__(self,config):
         
         self.window = WindowedDisplay(
             'Moondalup', CarParkDisplay.fields)
@@ -89,7 +90,7 @@ class CarParkDisplay:
         self.client = paho.Client()
         self.client.on_message = self.on_message   #callback function
         self.received=False
-        self.client.connect( "LOCALHOST", 1883)
+        self.client.connect(config["broker_host"], config["broker_port"])
         self.client.subscribe("lot/display")
         self.client.loop_start() 
 
@@ -109,4 +110,5 @@ if __name__ == '__main__':
     # TODO: Run each of these classes in a separate terminal. You should see the CarParkDisplay update when you click the buttons in the CarDetector.
     # These classes are not designed to be used in the same module - they are both blocking. If you uncomment one, comment-out the other.
 
-    CarParkDisplay()
+    config = config_parser.parse_config("config.toml") 
+    CarParkDisplay(config)
