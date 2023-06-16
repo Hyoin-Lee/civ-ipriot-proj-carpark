@@ -36,8 +36,8 @@ Finally, you can use `yaml` if you prefer.
 
 
 def parse_config(config_file: str) -> dict:
-    with open(config_file, "rb") as f:
-        config = tomli.load(f)
+    with open(config_file, "rb") as file:
+        config = tomli.load(file)
         print(config)
         return config
     #"""Parse the config file and return the values as a dictionary"""

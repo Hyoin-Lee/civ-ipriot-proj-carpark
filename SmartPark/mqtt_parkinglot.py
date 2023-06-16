@@ -2,7 +2,6 @@ import paho.mqtt.client as paho
 import time
 import random
 import config_parser
-
 class ParkingLot():
 
 
@@ -22,20 +21,23 @@ class ParkingLot():
             self.current_cars=self.current_cars+1 
             if (self.current_cars > self.total_spaces):
                 print("Fully occupied")
-                self.current_cars = self.total_spaces
+                #self.current_cars = self.total_spaces
         else:
             self.current_cars=self.current_cars-1
             if (self.current_cars < 0):
                 print("Invalid number")
                 self.current_cars = 0
-        self.Count_available_cars()
+        self.count_available_cars()
     
-    def getTimeAndTemperature(self):
+    def get_time_and_temperature(self):
         return f'{random.randint(0, 45):02d}℃', time.strftime("%H:%M:%S")
 
-    def Count_available_cars(self):
-        currentTime, temperature=self.getTimeAndTemperature()
-        self.client.publish("lot/display",  str(192-self.current_cars)+"@"+currentTime+"@"+temperature)
+    def count_available_cars(self):
+        current_time, temperature=self.get_time_and_temperature()
+        display_available_cars = min(self.total_spaces-self.current_cars,self.total_spaces) # =< self.total_spaces
+        display_available_cars = max(display_available_cars,0) # => 0
+
+        self.client.publish("lot/display",  str(display_available_cars)+"@"+current_time+"@"+temperature)
 
 
 

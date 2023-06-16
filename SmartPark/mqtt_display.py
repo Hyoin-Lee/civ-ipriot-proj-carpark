@@ -99,7 +99,7 @@ class CarParkDisplay:
     
     def on_message(self,client, userdata, msg):
         print(f'Received {msg.payload.decode()}')
-        message=msg.payload.decode()
+        message = msg.payload.decode()
         message.split("@")
         fields = ['Available bays', 'Temperature', 'At']
         field_values = dict(zip(fields, message.split("@")))
